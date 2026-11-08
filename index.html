@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>旧件回收估价工作台 · 合肥包河3C</title>
+<style>
+:root{
+  --bg:#0f1216; --panel:#171c22; --panel2:#1e252d; --line:#2a333d;
+  --txt:#e8edf3; --sub:#8b98a6; --accent:#3ddc97; --warn:#ffb454; --danger:#ff6b6b;
+  --radius:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{
+  margin:0;background:var(--bg);color:var(--txt);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",sans-serif;
+  padding:0 0 96px;font-size:15px;line-height:1.5;
+}
+.wrap{max-width:720px;margin:0 auto;padding:0 14px}
+header{padding:18px 0 12px}
+h1{font-size:19px;margin:0 0 4px;letter-spacing:.5px}
+.meta{font-size:12px;color:var(--sub);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block}
+.dot.stale{background:var(--warn)}
+.dot.off{background:var(--danger)}
+
+.banner{
+  background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--warn);
+  border-radius:8px;padding:9px 11px;font-size:12px;color:var(--sub);margin:10px 0 14px;
+}
+.banner b{color:var(--warn);font-weight:600}
+
+.toolbar{display:flex;gap:8px;margin-bottom:12px}
+input[type=search]{
+  flex:1;background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:11px 13px;color:var(--txt);font-size:15px;outline:none;
+}
+input[type=search]:focus{border-color:var(--accent)}
+select{
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:11px 10px;color:var(--txt);font-size:14px;outline:none;
+}
+
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:13px 14px;margin-bottom:10px;
+}
+.card.live{border-color:#2c5a45}
+.row1{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.name{font-weight:600;font-size:15px}
+.sku{font-size:12px;color:var(--sub);margin-top:2px}
+.badge{
+  font-size:11px;padding:2px 7px;border-radius:6px;white-space:nowrap;flex-shrink:0;
+  background:#1c3a2c;color:var(--accent);border:1px solid #2c5a45;
+}
+.badge.ref{background:#3a3428;color:var(--warn);border-color:#5a4a2c}
+.price{
+  display:flex;align-items:baseline;gap:6px;margin:10px 0 2px;flex-wrap:wrap;
+}
+.price .big{font-size:22px;font-weight:700;letter-spacing:-.5px}
+.price .unit{font-size:12px;color:var(--sub)}
+.price .range{font-size:12px;color:var(--sub);margin-left:auto}
+.acts{display:flex;gap:8px;margin-top:10px}
+.acts button{
+  flex:1;padding:9px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);
+  color:var(--txt);font-size:13px;cursor:pointer;
+}
+.acts button.primary{background:var(--accent);color:#08120d;border-color:var(--accent);font-weight:600}
+.acts button:active{transform:scale(.98)}
+
+.accept{
+  margin-top:10px;padding:10px;border-radius:9px;background:#121a16;border:1px solid #2c5a45;
+  font-size:13px;display:flex;justify-content:space-between;align-items:center;
+}
+.accept .v{color:var(--accent);font-weight:700}
+
+footer{
+  position:fixed;left:0;right:0;bottom:0;background:rgba(15,18,22,.96);
+  backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px 14px 16px;
+}
+.fbar{max-width:720px;margin:0 auto;display:flex;gap:8px;align-items:center}
+.fstat{font-size:12px;color:var(--sub);flex:1;line-height:1.35}
+.fbar button{
+  padding:11px 16px;border-radius:10px;border:1px solid var(--accent);
+  background:var(--accent);color:#08120d;font-weight:600;font-size:14px;cursor:pointer;
+}
+.empty{text-align:center;color:var(--sub);padding:40px 0;font-size:13px}
+.toast{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:88px;background:var(--panel2);
+  border:1px solid var(--line);color:var(--txt);padding:10px 16px;border-radius:10px;
+  font-size:13px;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:80%;
+}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>旧件回收估价工作台</h1>
+    <div class="meta">
+      <span id="status"><span class="dot off"></span> 加载中…</span>
+      <span id="hitinfo"></span>
+    </div>
+  </header>
+
+  <div class="banner" id="banner"></div>
+
+  <div class="toolbar">
+    <input type="search" id="kw" placeholder="搜型号 / 品牌，如 iPhone、固态、B660">
+    <select id="cat">
+      <option value="">全部</option>
+    </select>
+  </div>
+
+  <div id="list"></div>
+</div>
+
+<footer>
+  <div class="fbar">
+    <div class="fstat" id="fstat">已录 0 件 · 合计 ¥0</div>
+    <button onclick="copyReport()">复制汇报</button>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 站点参考价（转转未覆盖时的兜底，单位元） ============ */
+const BASELINE = [
+  {cat:"手机",   brand:"Apple",  model:"iPhone 13",  sku:"128G",        lo:800,  hi:1400},
+  {cat:"手机",   brand:"Apple",  model:"iPhone 14",  sku:"128G",        lo:1100, hi:1900},
+  {cat:"手机",   brand:"Apple",  model:"iPhone 15",  sku:"128G",        lo:1600, hi:2600},
+  {cat:"手机",   brand:"小米",   model:"小米14",     sku:"256G",        lo:800,  hi:1500},
+  {cat:"笔记本", brand:"Apple",  model:"MacBook Air M1", sku:"8+256",   lo:1600, hi:2800},
+  {cat:"笔记本", brand:"联想",   model:"小新 Pro14", sku:"i5/16+512",   lo:900,  hi:1600},
+  {cat:"笔记本", brand:"ThinkPad",model:"X1 Carbon", sku:"i7/16+512",   lo:700,  hi:1500},
+  {cat:"显卡",   brand:"NVIDIA", model:"GTX 1660S",  sku:"6G",          lo:350,  hi:550},
+  {cat:"显卡",   brand:"NVIDIA", model:"RTX 3060",   sku:"12G",         lo:800,  hi:1200},
+  {cat:"内存",   brand:"金士顿", model:"DDR4 2666",  sku:"8G",          lo:40,   hi:75},
+  {cat:"内存",   brand:"金士顿", model:"DDR4 3200",  sku:"16G",         lo:90,   hi:150},
+  {cat:"CPU",    brand:"Intel",  model:"i5-10400F",  sku:"散片",        lo:180,  hi:280},
+  {cat:"CPU",    brand:"Intel",  model:"i7-10700",   sku:"散片",        lo:380,  hi:520},
+  {cat:"固态",   brand:"NVMe",   model:"PCIe3.0",    sku:"512GB",       lo:90,   hi:160},
+  {cat:"固态",   brand:"NVMe",   model:"PCIe3.0",    sku:"1TB",         lo:180,  hi:300},
+  {cat:"主板",   brand:"华硕/技嘉",model:"B660M",    sku:"DDR4",        lo:220,  hi:380},
+  {cat:"主板",   brand:"华硕/技嘉",model:"B760M",    sku:"DDR4",        lo:300,  hi:480},
+  {cat:"打印机", brand:"HP",     model:"LaserJet 1020", sku:"黑白激光", lo:80,   hi:180},
+  {cat:"打印机", brand:"兄弟",   model:"1218W",      sku:"黑白激光",    lo:100,  hi:220}
+];
+
+const KEY = "hh3c_recycle_accept_v1";
+let live = {};        // key -> {min,max,...}
+let updatedAt = "";
+let accepts = JSON.parse(localStorage.getItem(KEY) || "{}");
+
+/* ---------- 数据加载 ---------- */
+async function loadPrices(){
+  try{
+    const r = await fetch("prices.json?t=" + Date.now());
+    if(!r.ok) throw new Error("HTTP " + r.status);
+    const d = await r.json();
+    updatedAt = d.updated_at || "";
+    Object.entries(d.items || {}).forEach(([k,v])=>{
+      if(v && v.hit && v.max) live[k] = v;
+    });
+    const n = Object.keys(live).length;
+    let dotCls = "off", txt = "未接入实时数据 · 仅站点参考价";
+    if(n > 0){
+      const age = (Date.now() - new Date(updatedAt.replace(/-/g,"/")).getTime()) / 36e5;
+      dotCls = age > 36 ? "stale" : "";
+      txt = (age > 36 ? "数据已过期 · " : "实时数据 ") + updatedAt;
+      document.getElementById("hitinfo").textContent = `转转覆盖 ${n}/${d.total || n} 款`;
+    }
+    document.getElementById("status").innerHTML =
+      `<span class="dot ${dotCls}"></span> ${txt}`;
+  }catch(e){
+    document.getElementById("status").innerHTML =
+      `<span class="dot off"></span> 未接入实时数据 · 仅站点参考价`;
+  }
+  buildBanner();
+  render();
+}
+
+function buildBanner(){
+  const n = Object.keys(live).length;
+  let html;
+  if(n === 0){
+    html = `<b>提示</b>：当前全部为站点内置参考价，按经验区间估值，请以实际成交为准。`;
+  }else{
+    html = `<b>数据说明</b>：标记「转转」的为转转官方该型号回收价区间（近7天成交，最低成色～最佳成色全区间，非精确定价）；`
+         + `配件/打印机类转转不覆盖，显示站点参考价。估价仅供议价参考。`;
+  }
+  document.getElementById("banner").innerHTML = html;
+}
+
+/* ---------- 渲染 ---------- */
+function merged(){
+  const map = new Map();
+  BASELINE.forEach(b=>{
+    map.set(`${b.cat}|${b.brand}|${b.model}|${b.sku}`,
+      {...b, src:"ref", refLo:b.lo, refHi:b.hi});
+  });
+  Object.entries(live).forEach(([k,v])=>{
+    const [cat, brand, model, sku] = k.split("|");
+    const base = map.get(k);
+    const refLo = base ? base.lo : null;
+    const refHi = base ? base.hi : null;
+
+    // 背离检测：转转区间上限明显低于/高于站点经验区间，判定型号识别偏离，降级为参考价
+    let suspect = false, note = "";
+    if(refHi && v.max != null){
+      if(v.max < refLo * 0.5){ suspect = true; note = "转转识别型号偏离，已降级为站点参考"; }
+      else if(v.max > refHi * 3){ suspect = true; note = "转转区间异常偏宽，已降级为站点参考"; }
+    }
+    if(!suspect) delete live_isSuspect;
+
+    map.set(k, {
+      cat, brand, model, sku,
+      lo: suspect ? refLo : (v.min != null ? v.min : refLo),
+      hi: suspect ? refHi : (v.max != null ? v.max : refHi),
+      src: suspect ? "ref" : "zz",
+      suspect, note,
+      url: suspect ? null : v.jump_url,
+      refLo, refHi
+    });
+  });
+  return [...map.values()];
+}
+
+function render(){
+  const kw = (document.getElementById("kw").value || "").trim().toLowerCase();
+  const cat = document.getElementById("cat").value;
+  let data = merged();
+  if(cat) data = data.filter(d=>d.cat === cat);
+  if(kw) data = data.filter(d=>
+    (d.model+" "+d.brand+" "+d.sku+" "+d.cat).toLowerCase().includes(kw));
+
+  const list = document.getElementById("list");
+  if(!data.length){
+    list.innerHTML = `<div class="empty">没有匹配的型号。可在下方汇报中手工录入。</div>`;
+    return;
+  }
+  list.innerHTML = data.map(d=>{
+    const k = `${d.cat}|${d.brand}|${d.model}|${d.sku}`;
+    const acc = accepts[k];
+    const isZZ = d.src === "zz";
+    return `
+    <div class="card ${isZZ?'live':''}">
+      <div class="row1">
+        <div>
+          <div class="name">${d.model} <span style="color:var(--sub);font-weight:400;font-size:13px">${d.sku||""}</span></div>
+          <div class="sku">${d.cat} · ${d.brand}</div>
+        </div>
+        <span class="badge ${isZZ?'':'ref'}">${isZZ?'转转实时':'站点参考'}</span>
+      </div>
+      <div class="price">
+        <span class="big">${d.hi!=null?'¥'+d.hi:'--'}</span>
+        <span class="unit">成色良好参考</span>
+        <span class="range">报废残值 ${d.lo!=null?'¥'+d.lo:'?'}</span>
+      </div>
+      ${d.note?`<div class="sku" style="color:var(--warn);margin-top:4px">${d.note}</div>`:""}
+      ${acc?`<div class="accept"><span>本站实收</span><span class="v">¥${acc.price}</span></div>`:""}
+      <div class="acts">
+        <button class="primary" onclick="record('${k}')">${acc?'改实收价':'录实收价'}</button>
+        ${isZZ&&d.url?`<button onclick="window.open('${d.url}','_blank')">转转核价</button>`:""}
+      </div>
+    </div>`;
+  }).join("");
+  updateFooter();
+}
+
+/* ---------- 交互 ---------- */
+function record(k){
+  const old = accepts[k] ? accepts[k].price : "";
+  const v = prompt("输入本站实收价（元）：", old);
+  if(v === null) return;
+  const n = parseFloat(v);
+  if(!v.trim() || isNaN(n) || n < 0){ toast("请输入有效数字"); return; }
+  accepts[k] = { price: n, at: new Date().toISOString().slice(0,10) };
+  localStorage.setItem(KEY, JSON.stringify(accepts));
+  render();
+  toast("已记录 ¥" + n);
+}
+
+function updateFooter(){
+  const list = Object.entries(accepts);
+  const sum = list.reduce((s,[,v])=> s + (v.price||0), 0);
+  document.getElementById("fstat").textContent =
+    `已录 ${list.length} 件 · 合计 ¥${sum}`;
+}
+
+async function copyReport(){
+  const list = Object.entries(accepts);
+  if(!list.length){ toast("还没有录入实收价"); return; }
+  const lines = list.map(([k,v])=>{
+    const [cat,brand,model,sku] = k.split("|");
+    return `${model} ${sku}（${brand}） ¥${v.price}`;
+  });
+  const sum = list.reduce((s,[,v])=> s + (v.price||0), 0);
+  const txt = `【旧件回收估价单】\n站点：合肥包河3C\n日期：${new Date().toISOString().slice(0,10)}\n`
+    + `————————\n` + lines.join("\n") + `\n————————\n合计 ${list.length} 件，共 ¥${sum}`;
+  try{
+    await navigator.clipboard.writeText(txt);
+    toast("已复制，可直接粘贴发送");
+  }catch(e){
+    prompt("手动复制：", txt);
+  }
+}
+
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"), 1600);
+}
+
+/* ---------- 初始化 ---------- */
+(function init(){
+  const cats = [...new Set(BASELINE.map(b=>b.cat).concat(Object.keys(live).map(k=>k.split("|")[0])))];
+  const sel = document.getElementById("cat");
+  cats.forEach(c=>{
+    const o = document.createElement("option");
+    o.value = c; o.textContent = c; sel.appendChild(o);
+  });
+  sel.onchange = render;
+  document.getElementById("kw").oninput = render;
+  loadPrices();
+})();
+</script>
+</body>
+</html>
