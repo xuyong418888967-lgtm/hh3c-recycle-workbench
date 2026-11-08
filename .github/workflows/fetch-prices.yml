@@ -1,0 +1,40 @@
+name: 抓取转转回收价
+
+on:
+  schedule:
+    - cron: "5 0 * * *"
+    - cron: "5 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-prices
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: 抓取估价
+        env:
+          ZZ_TOKEN: ${{ secrets.ZZ_TOKEN }}
+        run: python fetch_prices.py
+      - name: 提交价格快照
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add prices.json
+          if git diff --staged --quiet; then
+            echo "价格无变化，跳过提交"
+          else
+            git commit -m "chore: 更新回收价快照"
+            git push
+          fi
