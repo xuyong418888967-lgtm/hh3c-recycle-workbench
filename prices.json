@@ -1,0 +1,122 @@
+{
+ "updated_at": "2026-11-08 20:39",
+ "source": "转转开放平台 MCP · 回收估价",
+ "total": 13,
+ "hit": 6,
+ "miss": 7,
+ "items": {
+  "手机|Apple|iPhone 13|128G": {
+   "query": "iPhone 13 128GB",
+   "hit": true,
+   "recognized_name": "iPhone 13",
+   "cate_name": "手机",
+   "min": 25,
+   "max": 1045,
+   "sku": "128G",
+   "jump_url": "https://zz3.cn/1fXczk",
+   "price_source": "近7天成交"
+  },
+  "手机|Apple|iPhone 14|128G": {
+   "query": "iPhone 14 128GB",
+   "hit": true,
+   "recognized_name": "iPhone 14",
+   "cate_name": "手机",
+   "min": 25,
+   "max": 1235,
+   "sku": "128G",
+   "jump_url": "https://zz3.cn/1fXczo",
+   "price_source": "近7天成交"
+  },
+  "手机|Apple|iPhone 15|128G": {
+   "query": "iPhone 15 128GB",
+   "hit": true,
+   "recognized_name": "iPhone 15",
+   "cate_name": "手机",
+   "min": 75,
+   "max": 1895,
+   "sku": "128G",
+   "jump_url": "https://zz3.cn/1fXcBY",
+   "price_source": "近7天成交"
+  },
+  "手机|小米|小米14|256G": {
+   "query": "小米14 256GB",
+   "hit": true,
+   "recognized_name": "小米 14",
+   "cate_name": "手机",
+   "min": 90,
+   "max": 1240,
+   "sku": "8G+256G",
+   "jump_url": "https://zz3.cn/1fXcBh",
+   "price_source": "近7天成交"
+  },
+  "笔记本|Apple|MacBook Air M1|8+256": {
+   "query": "MacBook Air M1 8G 256G",
+   "hit": true,
+   "recognized_name": "苹果 20年 13寸 MacBook Air(M1)",
+   "cate_name": "笔记本",
+   "min": 15,
+   "max": 2250,
+   "sku": "Apple M1·8GB-10GB·固态硬盘240GB-450GB",
+   "jump_url": "https://zz3.cn/1fXcD9",
+   "price_source": "近7天成交"
+  },
+  "笔记本|联想|小新 Pro14|i5/16+512": {
+   "query": "联想 小新 Pro14 i5",
+   "hit": false,
+   "error": "型号未识别"
+  },
+  "笔记本|ThinkPad|X1 Carbon|i7/16+512": {
+   "query": "ThinkPad X1 Carbon",
+   "hit": true,
+   "recognized_name": "ThinkPad X1 Carbon Touch",
+   "cate_name": "笔记本",
+   "min": 155,
+   "max": 385,
+   "sku": "16GB-18GB·固态硬盘480GB-800GB",
+   "jump_url": "https://zz3.cn/1fXcCS",
+   "price_source": "近30天成交"
+  },
+  "打印机|HP|LaserJet 1020|黑白激光": {
+   "query": "惠普 LaserJet 1020 打印机",
+   "hit": false,
+   "recognized_name": "惠普 LaserJet Tank 1020",
+   "cate_name": "打印机/3D打印机",
+   "error": "暂未命中有效价格"
+  },
+  "打印机|兄弟|1218W|黑白激光": {
+   "query": "兄弟 1218W 打印机",
+   "hit": false,
+   "recognized_name": "兄弟 1218W",
+   "cate_name": "打印机/3D打印机",
+   "error": "暂未命中有效价格区间"
+  },
+  "固态硬盘|NVMe|1TB|PCIe3.0": {
+   "query": "三星 980 1TB 固态硬盘",
+   "hit": false,
+   "recognized_name": "三星 980",
+   "cate_name": "固态硬盘",
+   "error": "暂未命中有效价格区间"
+  },
+  "固态硬盘|NVMe|512GB|PCIe3.0": {
+   "query": "三星 980 500GB 固态硬盘",
+   "hit": false,
+   "recognized_name": "三星 980",
+   "cate_name": "固态硬盘",
+   "error": "暂未命中有效价格区间"
+  },
+  "主板|华硕/技嘉|B660M|DDR4": {
+   "query": "华硕 B660M 主板",
+   "hit": false,
+   "recognized_name": "华硕 B660M-P D4",
+   "cate_name": "主板",
+   "error": "暂未命中有效价格区间"
+  },
+  "主板|华硕/技嘉|B760M|DDR4": {
+   "query": "华硕 B760M 主板",
+   "hit": false,
+   "recognized_name": "华硕 B760M-P",
+   "cate_name": "主板",
+   "error": "暂未命中有效价格区间"
+  }
+ }
+}
