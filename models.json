@@ -1,0 +1,22 @@
+{
+ "说明": "抓价清单。key 用于前端匹配（品类|品牌|型号|规格），query 用于型号识别，detail_query 用于估价时补充容量成色等要素，expect_brand 用于校验识别是否偏离。",
+ "items": [
+  { "key": "手机|Apple|iPhone 13|128G", "query": "iPhone 13 128GB", "detail_query": "128GB 外壳完美或有轻微使用痕迹 正常开机", "expect_brand": "Apple" },
+  { "key": "手机|Apple|iPhone 14|128G", "query": "iPhone 14 128GB", "detail_query": "128GB 外壳完美或有轻微使用痕迹 正常开机", "expect_brand": "Apple" },
+  { "key": "手机|Apple|iPhone 15|128G", "query": "iPhone 15 128GB", "detail_query": "128GB 外壳完美或有轻微使用痕迹 正常开机", "expect_brand": "Apple" },
+  { "key": "手机|小米|小米14|256G", "query": "小米14 256GB", "detail_query": "256GB 外壳完美或有轻微使用痕迹 正常开机", "expect_brand": "小米" },
+
+  { "key": "笔记本|Apple|MacBook Air M1|8+256", "query": "MacBook Air M1 8G 256G", "detail_query": "M1 8G内存 256G硬盘 正常开机 外壳轻微使用痕迹", "expect_brand": "Apple" },
+  { "key": "笔记本|联想|小新 Pro14|i5/16+512", "query": "联想 小新 Pro14 i5", "detail_query": "i5 16G内存 512G硬盘 正常开机 外壳轻微使用痕迹", "expect_brand": "联想" },
+  { "key": "笔记本|ThinkPad|X1 Carbon|i7/16+512", "query": "ThinkPad X1 Carbon", "detail_query": "i7 16G内存 512G硬盘 正常开机 外壳轻微使用痕迹", "expect_brand": "ThinkPad" },
+
+  { "key": "打印机|HP|LaserJet 1020|黑白激光", "query": "惠普 LaserJet 1020 打印机", "detail_query": "黑白激光打印机 功能正常 外壳轻微使用痕迹", "expect_brand": "惠普" },
+  { "key": "打印机|兄弟|1218W|黑白激光", "query": "兄弟 1218W 打印机", "detail_query": "黑白激光打印机 功能正常 外壳轻微使用痕迹", "expect_brand": "兄弟" },
+
+  { "key": "固态硬盘|NVMe|1TB|PCIe3.0", "query": "三星 980 1TB 固态硬盘", "detail_query": "1TB NVMe 固态硬盘 功能正常", "expect_brand": "三星" },
+  { "key": "固态硬盘|NVMe|512GB|PCIe3.0", "query": "三星 980 500GB 固态硬盘", "detail_query": "500GB NVMe 固态硬盘 功能正常", "expect_brand": "三星" },
+
+  { "key": "主板|华硕/技嘉|B660M|DDR4", "query": "华硕 B660M 主板", "detail_query": "B660M 主板 功能正常", "expect_brand": "华硕" },
+  { "key": "主板|华硕/技嘉|B760M|DDR4", "query": "华硕 B760M 主板", "detail_query": "B760M 主板 功能正常", "expect_brand": "华硕" }
+ ]
+}
